@@ -1,12 +1,15 @@
+// saving the elements for later for us to manipulate 
 var authBtn = document.querySelector("#auth-btn");
 var getGenreBtn = document.querySelector("#get-genre");
 
+// these are our project keys
 var clientID = "f22c868cd9cf4b1ba13b92a0ceff4632";
 var clientSecret = "d53376ed600341df98c7c3b0c037dc9d";
 var clientKey = "";
 var sessionToken = "";
 var refreshToken = "";
 
+// URLs 
 var spotifyAccountURL = "https://accounts.spotify.com/authorize";
 var spotifyTokenURL = "https://accounts.spotify.com/api/token";
 var spotifyAPIURL = "https://api.spotify.com/v1";
@@ -45,7 +48,7 @@ var alcohols = {
     z: "rum"
 };
 
-
+// opens window to spotify
 var redirectToSpotify = function () {
     window.location.href = "?" + spotifyAccountURL + "client_id=" + clientID + "&response_type=code&" + "redirect_uri=" + redirectURL + "&scope=user-top-read%20playlist-read-private";
 }
