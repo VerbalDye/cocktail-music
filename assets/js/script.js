@@ -47,7 +47,7 @@ var alcohols = {
 
 
 var redirectToSpotify = function () {
-    window.location.href = "?" + spotifyAccountURL + "client_id=" + clientID + "&response_type=code&" + "redirect_uri=" + redirectURL + "&scope=user-top-read%20playlist-read-private";
+    window.location.href = spotifyAccountURL + "?client_id=" + clientID + "&response_type=code" + "&redirect_uri=" + redirectURL + "&scope=user-top-read%20playlist-read-private";
 }
 
 var handleOnload = function () {
@@ -91,10 +91,10 @@ var getUserToken = function (postBody) {
     })
 }
 
-var getRefreshToken = function (refreshToken) {
+var getRefreshToken = function () {
     var postBody = "grant_type=refresh_token";
-    postBody += "&refreshToken" + refreshToken;
-    postBody += "&redirect_uri=" + redirectURL;
+    postBody += "&refresh_token=" + refreshToken;
+    postBody += "&client_id=" + clientID;
 
     getUserToken(postBody);
 }
@@ -106,14 +106,13 @@ var handleUserTokenResponse = function (response) {
             sessionToken = data.access_token;
             refreshToken = data.refresh_token;
             var tokensObject = {
-            sessionToken: sessionToken,
-            refreshToken: refreshToken
+                sessionToken: sessionToken,
+                refreshToken: refreshToken
             };
             localStorage.setItem("tokens", JSON.stringify(tokensObject));
-
         })
     } else if (response.status == 401) {
-        getRefreshToken(refreshToken);
+        getRefreshToken();
     } else {
         console.log(response.responseText)
     }
@@ -127,13 +126,22 @@ var getGenre = function () {
         },
         method: "GET"
     }).then(function (response) {
-        response.json().then(function (data) {
-            convertArtistToAlchohol(data);
-        })
+        if (response.status == 200) {
+            response.json().then(function (data) {
+                console.log(data);
+                convertArtistToAlchohol(data);
+            })
+        } else if (response.status == 401) {
+            getRefreshToken();
+        } else {
+            console.log(response.responseText);
+        }
+    }).catch(function (error) {
+        console.log(error);
     })
 }
 
-var convertArtistToAlchohol = function(data) {
+var convertArtistToAlchohol = function (data) {
     console.log(data);
     var artistName = data.items[0].name;
     var artistNameFirst = artistName.charAt(0);
@@ -143,15 +151,21 @@ var convertArtistToAlchohol = function(data) {
 var getCocktailByIngrediant = function (ingrediant) {
     console.log(ingrediant);
     console.log(cocktailAPIURL + "?i=" + ingrediant);
-    fetch( cocktailAPIURL + "?i=" + ingrediant, {method: "GET"})
-    .then(function (response) {
-        response.json().then(function (data) {
-            console.log(data);
+    fetch(cocktailAPIURL + "?i=" + ingrediant, { method: "GET" })
+        .then(function (response) {
+            response.json().then(function (data) {
+                console.log(data);
+                writeDrinkToScreen(data);
+            })
         })
-    })
 }
 
-// getCocktailByIngrediant("Gin");
+var writeDrinkToScreen = function(data) {
+    var drinkName = data.drinks[0].strDrink;
+    var drinkPic = data.drinks[0].strDrinkThumb;
+    console.log(drinkName);
+    console.log(drinkPic);
+}
 
 onload = handleOnload();
 
