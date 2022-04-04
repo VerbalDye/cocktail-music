@@ -1,0 +1,41 @@
+:root {
+    --primary-color: #212bb6;
+    --secondary-color: #828b91;
+    --tertiary-color: #0b0c0c;
+}
+
+* {
+    margin: 06px;
+    padding: 0;
+    box-sizing: border-box;
+    
+
+}
+
+header {
+    padding: 20px 35px;
+    background-color: var(--tertiary-color);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    position: -webkit-sticky;
+    position: sticky;
+    z-index: 9999; 
+}
+
+header h1 {
+    font-weight: bold;
+    margin: 0;
+    font-size: 36px;
+    color:  var(--primary-color);
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+header p {
+    color: var(--primary-color);
+}
+
+
+header nav {
+    margin: 7px 0;
+}
