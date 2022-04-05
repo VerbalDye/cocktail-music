@@ -1,6 +1,8 @@
 // saving the elements for later for us to manipulate 
 var authBtn = document.querySelector("#auth-btn");
-var getGenreBtn = document.querySelector("#get-genre");
+var getArtistBtn = document.querySelector("#get-artist");
+var drinkPicEl = document.querySelector("#drink-pic");
+var drinkNameEl = document.querySelector("#drink-name");
 
 // these are our project keys
 var clientID = "f22c868cd9cf4b1ba13b92a0ceff4632";
@@ -121,7 +123,7 @@ var handleUserTokenResponse = function (response) {
     }
 }
 
-var getGenre = function () {
+var getArtist = function () {
     fetch(spotifyAPIURL + topSpotifyURL + "artists", {
         headers: {
             'Authorization': 'Bearer ' + sessionToken,
@@ -131,7 +133,6 @@ var getGenre = function () {
     }).then(function (response) {
         if (response.status == 200) {
             response.json().then(function (data) {
-                console.log(data);
                 convertArtistToAlchohol(data);
             })
         } else if (response.status == 401) {
@@ -166,11 +167,12 @@ var getCocktailByIngrediant = function (ingrediant) {
 var writeDrinkToScreen = function(data) {
     var drinkName = data.drinks[0].strDrink;
     var drinkPic = data.drinks[0].strDrinkThumb;
-    console.log(drinkName);
-    console.log(drinkPic);
+    drinkNameEl.textContent = drinkName;
+    drinkPicEl.src = drinkPic;
+    getArtistBtn.style.visibility = "hidden";
 }
 
 onload = handleOnload();
 
 authBtn.addEventListener("click", redirectToSpotify);
-getGenreBtn.addEventListener("click", getGenre);
+getArtistBtn.addEventListener("click", getArtist);
