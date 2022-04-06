@@ -1,14 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@200;300;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./assets/css/styles.css">
-    <title>Document</title>
+
+
+    <title>Spotify & Cocktail API</title>
 </head>
+
 <body>
-    
+    <!-- Header -->
+    <header>
+        <nav>
+            <div>
+                <h1>Cocktail Music Combination</h1>
+                <p>The perfect combination of cocktails and music</p>
+            </div>
+        </nav>
+    </header>
+
+    <!-- end header-->
+
+    <!-- Main start -->
+    <main>
+        <div>
+            <button class="btn" id="get-artist">Get Top Artist</button>
+            <img id="drink-pic" src="" alt="">
+            <h3 id="drink-name"></h3>
+        </div>
+    </main>
+    <!-- end main-->
+
+    <section class="modal">
+        <div>
+            <p>in order to use this site you must log in through spotify press this button to be redirected</p>
+            <button class="btn" id="auth-btn">Authenticate</button>
+        </div>
+    </section>
+
     <script src="./assets/js/script.js"></script>
 </body>
+
 </html>

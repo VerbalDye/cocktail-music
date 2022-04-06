@@ -1,0 +1,85 @@
+:root {
+    --primary-color: #212bb6;
+    --secondary-color: #828b91;
+    --tertiary-color: #0b0c0c;
+    --button-color: #2b318b;
+    --button-active-color: #1e2758;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family:  'Dosis', sans-serif;
+}
+
+header {
+    padding: 20px 35px;
+    background-color: var(--secondary-color);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    position: -webkit-sticky;
+    position: sticky;
+    z-index: 9999; 
+}
+
+header h1 {
+    font-weight: bold;
+    margin: 0;
+    font-size: 36px;
+    color:  var(--primary-color);
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+header p {
+    color: var(--primary-color);
+}
+
+
+header nav {
+    margin: 7px 0;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+}
+
+.modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-image: radial-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.5));
+    z-index: 1000;
+    visibility: hidden;
+}
+
+.modal div {
+    background-color: var(--secondary-color);
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 24px;
+}
+
+.modal p {
+    margin: 5px;
+}
+
+.btn {
+    margin: 10px;
+    padding: 10px 20px;
+    border-radius: 7px;
+    font-size: 18px;
+    background-color: var(--button-color);
+}
+
+.btn:active {
+    background-color: var(--button-active-color);
+}
