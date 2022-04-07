@@ -3,6 +3,7 @@ var authBtn = document.querySelector("#auth-btn");
 var getArtistBtn = document.querySelector("#get-artist");
 var drinkPicEl = document.querySelector("#drink-pic");
 var drinkNameEl = document.querySelector("#drink-name");
+var authModalEl = document.querySelector(".modal");
 
 // these are our project keys
 var clientID = "f22c868cd9cf4b1ba13b92a0ceff4632";
@@ -17,9 +18,10 @@ var spotifyTokenURL = "https://accounts.spotify.com/api/token";
 var spotifyAPIURL = "https://api.spotify.com/v1";
 var redirectURL = "http://127.0.0.1:5500/index.html";
 
-var topSpotifyURL = "/me/top/"
+var followedArtistsURL = "/me/following";
+var topSpotifyURL = "/me/top/";
 
-var cocktailAPIURL = "https://www.thecocktaildb.com/api/json/v1/1/filter.php"
+var cocktailAPIURL = "https://www.thecocktaildb.com/api/json/v1/1/filter.php";
 
 var alcohols = {
     a: "gin",
@@ -52,7 +54,7 @@ var alcohols = {
 
 // opens window to spotify
 var redirectToSpotify = function () {
-    window.location.href = spotifyAccountURL + "?client_id=" + clientID + "&response_type=code" + "&redirect_uri=" + redirectURL + "&scope=user-top-read%20playlist-read-private";
+    window.location.href = spotifyAccountURL + "?client_id=" + clientID + "&response_type=code" + "&redirect_uri=" + redirectURL + "&scope=user-top-read%20playlist-read-private%20user-follow-read";
 }
 
 var handleOnload = function () {
@@ -61,11 +63,15 @@ var handleOnload = function () {
         sessionToken = tokensObject.sessionToken;
         refreshToken = tokensObject.refreshToken;
     }
-
+    
     if (window.location.search.length > 0 && !localStorage.getItem("tokens")) {
         clientKey = window.location.search.split("=")[1];
 
         firstTimeToken();
+    }
+
+    if (localStorage.getItem("tokens") || window.location.search.length > 0) {
+        authModalEl.style.visibility = "hidden";
     }
 }
 
@@ -123,7 +129,7 @@ var handleUserTokenResponse = function (response) {
     }
 }
 
-var getArtist = function () {
+var getArtist = function (totalArtists) {
     fetch(spotifyAPIURL + topSpotifyURL + "artists", {
         headers: {
             'Authorization': 'Bearer ' + sessionToken,
@@ -133,7 +139,31 @@ var getArtist = function () {
     }).then(function (response) {
         if (response.status == 200) {
             response.json().then(function (data) {
-                convertArtistToAlchohol(data);
+                var artistName = data.items[0].name;
+                var artistNameFirst = artistName.charAt(0);
+                getCocktailByIngrediant(alcohols[artistNameFirst.toLowerCase()], totalArtists);            })
+        } else if (response.status == 401) {
+            getRefreshToken();
+        } else {
+            console.log(response.responseText);
+        }
+    }).catch(function (error) {
+        console.log(error);
+    })
+}
+
+var getTotalArtists = function () {
+    fetch(spotifyAPIURL + followedArtistsURL + "?type=artist", {
+        headers: {
+            'Authorization': 'Bearer ' + sessionToken,
+            'Content-Type': "application/json"
+        },
+        method: "GET"
+    }).then(function (response) {
+        if (response.status == 200) {
+            response.json().then(function (data) {
+                var totalArtists = data.artists.total;
+                getArtist(totalArtists);
             })
         } else if (response.status == 401) {
             getRefreshToken();
@@ -145,34 +175,26 @@ var getArtist = function () {
     })
 }
 
-var convertArtistToAlchohol = function (data) {
-    console.log(data);
-    var artistName = data.items[0].name;
-    var artistNameFirst = artistName.charAt(0);
-    getCocktailByIngrediant(alcohols[artistNameFirst.toLowerCase()]);
-}
-
-var getCocktailByIngrediant = function (ingrediant) {
+var getCocktailByIngrediant = function (ingrediant, totalArtists) {
     console.log(ingrediant);
     console.log(cocktailAPIURL + "?i=" + ingrediant);
     fetch(cocktailAPIURL + "?i=" + ingrediant, { method: "GET" })
         .then(function (response) {
             response.json().then(function (data) {
-                console.log(data);
-                writeDrinkToScreen(data);
-            })
+                var drink = data.drinks[totalArtists % data.drinks.length];
+                var drinkName = drink.strDrink;
+                var drinkPic = drink.strDrinkThumb;
+                drinkNameEl.textContent = drinkName;
+                drinkPicEl.src = drinkPic;
+                getArtistBtn.style.visibility = "hidden";            })
         })
 }
 
 var writeDrinkToScreen = function(data) {
-    var drinkName = data.drinks[0].strDrink;
-    var drinkPic = data.drinks[0].strDrinkThumb;
-    drinkNameEl.textContent = drinkName;
-    drinkPicEl.src = drinkPic;
-    getArtistBtn.style.visibility = "hidden";
+    
 }
 
 onload = handleOnload();
 
 authBtn.addEventListener("click", redirectToSpotify);
-getArtistBtn.addEventListener("click", getArtist);
+getArtistBtn.addEventListener("click", getTotalArtists);
