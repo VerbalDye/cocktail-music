@@ -186,7 +186,7 @@ var getCocktailByIngrediant = function (ingrediant, totalArtists) {
                 var drinkPic = drink.strDrinkThumb;
                 drinkNameEl.textContent = drinkName;
                 drinkPicEl.src = drinkPic;
-                getArtistBtn.style.visibility = "hidden";            })
+                getArtistBtn.style.display = "none";            })
         })
 }
 

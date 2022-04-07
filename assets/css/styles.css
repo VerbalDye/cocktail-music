@@ -1,6 +1,6 @@
 :root {
     --primary-color: #212bb6;
-    --secondary-color: #828b91;
+    --secondary-color: #d4dbe0;
     --tertiary-color: #0b0c0c;
     --button-color: #2b318b;
     --button-active-color: #1e2758;
@@ -21,7 +21,7 @@ header {
     flex-wrap: wrap;
     position: -webkit-sticky;
     position: sticky;
-    z-index: 9999; 
+    z-index: 5; 
 }
 
 header h1 {
@@ -29,7 +29,7 @@ header h1 {
     margin: 0;
     font-size: 36px;
     color:  var(--primary-color);
-    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    text-shadow: 2px 2px 7px rgba(0, 0, 0, 0.6);
 }
 
 header p {
@@ -44,6 +44,16 @@ header nav {
 main {
     display: flex;
     justify-content: center;
+}
+
+#drink-pic {
+    margin: 10px;
+    border-radius: 10px;
+}
+
+#drink-name {
+    text-align: center;
+    font-size: 36px;
 }
 
 .modal {
