@@ -1,13 +1,16 @@
+// saving the elements for later for us to manipulate
 var cocktailDetailsURL = "https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i="
 var drinkID = ""
 var drinkPicEl = document.querySelector("#drink-pic");
 var drinkNameEl = document.querySelector("#drink-name");
 var drinkGlassEl = document.querySelector("#drink-glass");
-var drinkIngredientEl = document.querySelector("#drink-ingredient")
+var drinkIngredientEl = document.querySelector("#drink-ingredient");
+var drinkInstructionsEl = document.querySelector("#drink-instructions");
 
 // Cocktail API
 var cocktailAPIURL = "https://www.thecocktaildb.com/api/json/v1/1/filter.php";
 
+// loads recipe details page
 var getURL = function () {
     drinkID = window.location.search.split("?")[1];
     if (!drinkID) {
@@ -17,6 +20,7 @@ var getURL = function () {
     }
 }
 
+// fetches recipe info from cocktail API
 var getCocktailDetails = function () {
 
     fetch(cocktailDetailsURL + drinkID, { method: "GET" })
@@ -34,17 +38,15 @@ var getCocktailDetails = function () {
         })
 }
 
-// calls the cocktail api and searches for a list of cocktails by ingrediant
+// displays drink name, pic, glass, ingredients, and instructions for the given drink
 var writeRecipeToScreen = function (data) {
 
     var drink = data.drinks[0];
 
-    // sets the attributes of the drink from the chosen drink
-    var drinkName = drink.strDrink;
-    var drinkPic = drink.strDrinkThumb;
-    var drinkID = drink.idDrink;
-    var drinkGlass = drink.strGlass;
+    // display drink name
+    drinkNameEl.textContent = drink.strDrink;
 
+    // ingredients + measurements. there can be up to 15 ingredients with corresponding measurements; this combines each ingredient with it's measurement
     for (var i = 1; i < 16; i++) {
         var ingredientIndex = drink["strIngredient" + i];
         var ingredientMeasure = drink["strMeasure" + i];
@@ -55,13 +57,19 @@ var writeRecipeToScreen = function (data) {
         }
     }
 
-    var drinkInstructions = drink.strInstructions;
+    // display drink glass type
+    var drinkGlass = document.createElement("li");
+    drinkGlass.textContent = drink.strGlass;
+    drinkGlassEl.appendChild(drinkGlass);
 
-    // sets the attributes from the search to the screen elements
-    drinkNameEl.src = drinkName;
-    drinkPicEl.src = drinkPic;
-    drinkGlassEl.src = drinkGlass;
+    // display instructions
+    var drinkInstructions = document.createElement("li");
+    drinkInstructions.textContent = drink.strInstructions;
+    drinkInstructionsEl.appendChild(drinkInstructions);
 
+    // display pic
+    drinkPicEl.src = drink.strDrinkThumb;
 }
 
+// run function on load
 onload = getURL;
