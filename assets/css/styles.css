@@ -70,13 +70,20 @@ header nav {
 }
 
 main {
-    display: flex;
-    justify-content: center;
+    /* display: flex;
+    justify-content: center; */
+}
+
+#drink-header {
+    text-align: center;
+    font-size: 36px;
 }
 
 #drink-pic {
-    margin: 10px;
+    margin: 10px 5%;
+    text-align: center;
     border-radius: 10px;
+    max-width: 90%;
 }
 
 #drink-name {

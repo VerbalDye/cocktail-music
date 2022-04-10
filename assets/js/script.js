@@ -5,6 +5,7 @@ var drinkPicEl = document.querySelector("#drink-pic");
 var drinkNameEl = document.querySelector("#drink-name");
 var authModalEl = document.querySelector(".modal");
 var warningEl = document.querySelector(".warning-popup div");
+var drinkHeaderEl = document.querySelector("#drink-header");
 
 // these are our project keys
 var clientID = "f22c868cd9cf4b1ba13b92a0ceff4632";
@@ -227,11 +228,19 @@ var getArtist = function (totalArtists) {
                 // get the name of their top artist
                 var artistName = data.items[0].name;
 
+                drinkHeaderEl.textContent = "Your Favorite Artist is " + artistName + ", So We Recommend..."
+
                 // get the first letter of that bands name
                 var artistNameFirst = artistName.charAt(0);
 
-                // uses our achohols object to get an alochol to search for in the final step
-                getCocktailByIngrediant(alcohols[artistNameFirst.toLowerCase()], totalArtists);
+                if (artistNameFirst.toUpperCase() != artistNameFirst.toLowerCase() ) {
+
+                    // uses our achohols object to get an alochol to search for in the final step
+                    getCocktailByIngrediant(alcohols[artistNameFirst.toLowerCase()], totalArtists);
+                } 
+                // else {
+                //     artistNameFirst.charCodeAt(0);
+                // }
             })
         } else if (response.status == 401) {
 
