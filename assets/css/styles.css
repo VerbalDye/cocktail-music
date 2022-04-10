@@ -32,6 +32,13 @@
     border-radius: 10px;
     opacity: 0;
     box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
+    transition: opacity 1s;
+}
+
+.warning-popup div button {
+    padding: 10px;
+    width: 48px;
+    height: 48px;
 }
 
 header {
