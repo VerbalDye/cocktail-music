@@ -135,7 +135,7 @@ var getUserToken = function (postBody) {
     }).catch(function (error) {
 
         // catches and sends it to the warning bar
-        var html = "Sorry. Something went wrong during Authentication. Please check your connection and try again. Thanks! \n" + error;
+        var html = "Sorry. Something went wrong during Authentication. Please check your connection and try again.\n" + error;
         handleError(html);
     })
 }
@@ -234,18 +234,20 @@ var getArtist = function (totalArtists) {
                 getCocktailByIngrediant(alcohols[artistNameFirst.toLowerCase()], totalArtists);
             })
         } else if (response.status == 401) {
-            
+
             // if our token expires we get a new one.
             getRefreshToken();
         } else {
 
-            // logs response to console for debuggin purposes
-            console.log(response.responseText);
+            // logs response to user on failure
+            var html = "Oops! It seems an unknown error has occured. Check your connection and try agian. \n" + response.responseText;
+            handleError(html);
         }
     }).catch(function (error) {
 
-        // logs error to console for debuggin purposes
-        console.log(error);
+        // informs user of failure
+        var html = "We appear to be having trouble reaching Spotify. Check your connection and try agian. \n" + error;
+        handleError(html);
     })
 }
 
@@ -275,20 +277,27 @@ var getCocktailByIngrediant = function (ingrediant, totalArtists) {
                 })
             } else {
 
-                // logs bad repsonse to console
-                console.log(response.responseText);
+                // error handling
+                var html = "Oops! It seems an unknown error has occured. Check your connection and try agian. \n" + response.responseText;
+                handleError(html);
             }
-        })
+        }).catch(function (error) {
+    
+            // informs user of failure
+            var html = "We appear to be having trouble reaching the Cocktail Database. Check your connection and try agian. \n" + error;
+            handleError(html);
+        });
 }
 
-var handleError = function(htmlContent) {
+// sets up the warning element to be used on error
+var handleError = function (htmlContent) {
     warningEl.style.opacity = "1";
-    htmlContent += "<button class='btn' id='close-warning'>X</button>"
+    htmlContent += "<button class='btn' id='close-warning'>✕</button>"
+    warningEl.innerHTML = htmlContent;
     var closeWarningEl = document.querySelector("#close-warning");
-    closeWarningEl.addEventListener("click", function() {
+    closeWarningEl.addEventListener("click", function () {
         warningEl.style.opacity = "0";
     });
-    warningEl.innerHTML = htmlContent;
 }
 
 // runs function on load
@@ -297,6 +306,6 @@ onload = handleOnload();
 // event listeners for DOM elements
 authBtn.addEventListener("click", redirectToSpotify);
 getArtistBtn.addEventListener("click", getTotalArtists);
-closeWarningEl.addEventListener("click", function() {
+closeWarningEl.addEventListener("click", function () {
     warningEl.style.opacity = "0";
 });
