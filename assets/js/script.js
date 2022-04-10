@@ -61,7 +61,7 @@ var alcohols = {
 
 // Opens authentication window to spotify; step 1 of OAuth 2
 var redirectToSpotify = function () {
-    window.location.href = spotifyAccountURL + "?client_id=" + clientID + "&response_type=code" + "&redirect_uri=" + redirectURL + "&scope=user-top-read%20playlist-read-private%20user-follow-read";
+    window.location.href = spotifyAccountURL + "?client_id=" + clientID + "&response_type=code" + "&redirect_uri=" + redirectURL + "&show_dialog=true" + "&scope=user-top-read%20playlist-read-private%20user-follow-read";
 }
 
 // Function to handle the onload event
