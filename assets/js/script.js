@@ -20,7 +20,7 @@ var refreshToken = "";
 var spotifyAccountURL = "https://accounts.spotify.com/authorize";
 var spotifyTokenURL = "https://accounts.spotify.com/api/token";
 var spotifyAPIURL = "https://api.spotify.com/v1";
-var redirectURL = "http://127.0.0.1:5500/index.html";
+var redirectURL = "https://verbaldye.github.io/cocktail-music/index.html";
 
 // Search URLs
 var followedArtistsURL = "/me/following";
