@@ -259,9 +259,10 @@ var getCocktailByIngrediant = function (ingrediant, totalArtists) {
                     // sets the attributes of the drink from the chosen drink
                     var drinkName = drink.strDrink;
                     var drinkPic = drink.strDrinkThumb;
+                    var drinkID = drink.idDrink;
 
                     // sets the attributes from the search to the screen elements
-                    drinkNameEl.textContent = drinkName;
+                    drinkNameEl.innerHTML = "<a href='./drink_details.html?" + drinkID + "' >" + drinkName + "</a>";
                     drinkPicEl.src = drinkPic;
 
                     // removes the get button
