@@ -4,6 +4,7 @@ var getArtistBtn = document.querySelector("#get-artist");
 var drinkPicEl = document.querySelector("#drink-pic");
 var drinkNameEl = document.querySelector("#drink-name");
 var authModalEl = document.querySelector(".modal");
+var warningEl = document.querySelector(".warning-popup div");
 
 // these are our project keys
 var clientID = "f22c868cd9cf4b1ba13b92a0ceff4632";
@@ -133,8 +134,9 @@ var getUserToken = function (postBody) {
         handleUserTokenResponse(response);
     }).catch(function (error) {
 
-        // catches and logs an error to console
-        console.log(error);
+        // catches and sends it to the warning bar
+        var html = "Sorry. Something went wrong during Authentication. Please check your connection and try again. Thanks! \n" + error;
+        handleError(html);
     })
 }
 
@@ -161,9 +163,10 @@ var handleUserTokenResponse = function (response) {
     } else if (response.status == 401) {
         getRefreshToken();
 
-        // catches any other statuses and logs to console for debugging purposes
+        // catches any other statuses and informs the user
     } else {
-        console.log(response.responseText)
+        var html = "Oops! It seems an unknown error has occured. Check your connection and refresh to try agian. \n" + response.responseText;
+        handleError(html);
     }
 }
 
@@ -193,13 +196,15 @@ var getTotalArtists = function () {
             getRefreshToken();
         } else {
 
-            // logs response for debugging
-            console.log(response.responseText);
+            // informs user of failure
+            var html = "Oops! It seems an unknown error has occured. Check your connection and try agian. \n" + response.responseText;
+            handleError(html);
         }
     }).catch(function (error) {
 
-        // logs error for debugginh
-        console.log(error);
+        // informs user of failure
+        var html = "We appear to be having trouble reaching Spotify. Check your connection and try agian. \n" + error;
+        handleError(html);
     })
 }
 
@@ -276,9 +281,22 @@ var getCocktailByIngrediant = function (ingrediant, totalArtists) {
         })
 }
 
+var handleError = function(htmlContent) {
+    warningEl.style.opacity = "1";
+    htmlContent += "<button class='btn' id='close-warning'>X</button>"
+    var closeWarningEl = document.querySelector("#close-warning");
+    closeWarningEl.addEventListener("click", function() {
+        warningEl.style.opacity = "0";
+    });
+    warningEl.innerHTML = htmlContent;
+}
+
 // runs function on load
 onload = handleOnload();
 
 // event listeners for DOM elements
 authBtn.addEventListener("click", redirectToSpotify);
 getArtistBtn.addEventListener("click", getTotalArtists);
+closeWarningEl.addEventListener("click", function() {
+    warningEl.style.opacity = "0";
+});
