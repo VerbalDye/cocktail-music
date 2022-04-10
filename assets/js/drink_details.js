@@ -3,7 +3,8 @@ var drinkID = ""
 var drinkPicEl = document.querySelector("#drink-pic");
 var drinkNameEl = document.querySelector("#drink-name");
 var drinkGlassEl = document.querySelector("#drink-glass");
-var drinkIngredientEl = document.querySelector("#drink-ingredient")
+var drinkIngredientEl = document.querySelector("#drink-ingredient");
+var drinkInstructionsEl = document.querySelector("#drink-instructions");
 
 // Cocktail API
 var cocktailAPIURL = "https://www.thecocktaildb.com/api/json/v1/1/filter.php";
@@ -39,11 +40,7 @@ var writeRecipeToScreen = function (data) {
 
     var drink = data.drinks[0];
 
-    // sets the attributes of the drink from the chosen drink
-    var drinkName = drink.strDrink;
-    var drinkPic = drink.strDrinkThumb;
-    var drinkID = drink.idDrink;
-    var drinkGlass = drink.strGlass;
+    drinkNameEl.textContent = drink.strDrink;
 
     for (var i = 1; i < 16; i++) {
         var ingredientIndex = drink["strIngredient" + i];
@@ -55,12 +52,17 @@ var writeRecipeToScreen = function (data) {
         }
     }
 
-    var drinkInstructions = drink.strInstructions;
+    var drinkGlass = document.createElement("li");
+    drinkGlass.textContent = drink.strGlass;
+    drinkGlassEl.appendChild(drinkGlass);
+
+    var drinkInstructions = document.createElement("li");
+    drinkInstructions.textContent = drink.strInstructions;
+    drinkInstructionsEl.appendChild(drinkInstructions);
 
     // sets the attributes from the search to the screen elements
-    drinkNameEl.src = drinkName;
-    drinkPicEl.src = drinkPic;
-    drinkGlassEl.src = drinkGlass;
+    drinkNameEl.src = drink.strDrink;
+    drinkPicEl.src = drink.strDrinkThumb;
 
 }
 
