@@ -237,7 +237,7 @@ var getArtist = function (totalArtists) {
 
                     // uses our achohols object to get an alochol to search for in the final step
                     getCocktailByIngrediant(alcohols[artistNameFirst.toLowerCase()], totalArtists);
-                } 
+                }
                 // else {
                 //     artistNameFirst.charCodeAt(0);
                 // }

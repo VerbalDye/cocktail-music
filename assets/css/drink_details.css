@@ -1,0 +1,32 @@
+.recipe-block {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.recipe-info {
+    width: 40%;
+}
+
+.drink-info {
+    padding: 10px;
+}
+
+#drink-name {
+    font-size: 48px;
+}
+
+.drink-info h3  {
+    font-style: oblique;
+    font-size: 36px;
+}
+
+.drink-info h4 li {
+    font-size: 24px;
+}
+
+@media screen and (max-width: 1425px) {
+    .recipe-info {
+        width: 90%;
+    }
+}
