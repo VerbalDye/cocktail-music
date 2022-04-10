@@ -1,3 +1,4 @@
+// saving the elements for later for us to manipulate
 var cocktailDetailsURL = "https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i="
 var drinkID = ""
 var drinkPicEl = document.querySelector("#drink-pic");
@@ -9,6 +10,7 @@ var drinkInstructionsEl = document.querySelector("#drink-instructions");
 // Cocktail API
 var cocktailAPIURL = "https://www.thecocktaildb.com/api/json/v1/1/filter.php";
 
+// loads recipe details page
 var getURL = function () {
     drinkID = window.location.search.split("?")[1];
     if (!drinkID) {
@@ -18,6 +20,7 @@ var getURL = function () {
     }
 }
 
+// fetches recipe info from cocktail API
 var getCocktailDetails = function () {
 
     fetch(cocktailDetailsURL + drinkID, { method: "GET" })
@@ -35,13 +38,15 @@ var getCocktailDetails = function () {
         })
 }
 
-// calls the cocktail api and searches for a list of cocktails by ingrediant
+// displays drink name, pic, glass, ingredients, and instructions for the given drink
 var writeRecipeToScreen = function (data) {
 
     var drink = data.drinks[0];
 
+    // display drink name
     drinkNameEl.textContent = drink.strDrink;
 
+    // ingredients + measurements. there can be up to 15 ingredients with corresponding measurements; this combines each ingredient with it's measurement
     for (var i = 1; i < 16; i++) {
         var ingredientIndex = drink["strIngredient" + i];
         var ingredientMeasure = drink["strMeasure" + i];
@@ -52,18 +57,19 @@ var writeRecipeToScreen = function (data) {
         }
     }
 
+    // display drink glass type
     var drinkGlass = document.createElement("li");
     drinkGlass.textContent = drink.strGlass;
     drinkGlassEl.appendChild(drinkGlass);
 
+    // display instructions
     var drinkInstructions = document.createElement("li");
     drinkInstructions.textContent = drink.strInstructions;
     drinkInstructionsEl.appendChild(drinkInstructions);
 
-    // sets the attributes from the search to the screen elements
-    drinkNameEl.src = drink.strDrink;
+    // display pic
     drinkPicEl.src = drink.strDrinkThumb;
-
 }
 
+// run function on load
 onload = getURL;

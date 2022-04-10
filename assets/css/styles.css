@@ -81,6 +81,7 @@ main {
 
 #drink-name {
     text-align: center;
+    padding: 10px;
     font-size: 36px;
 }
 
@@ -128,4 +129,10 @@ main {
 
 .drink-info h3  {
     font-style: oblique;
+}
+
+.recipe-info {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
 }
